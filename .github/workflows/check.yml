@@ -1,0 +1,85 @@
+name: Check
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  flake-checker:
+    name: Flake checker
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - name: Install nix
+        uses: cachix/install-nix-action@8aa03977d8d733052d78f4e008a241fd1dbf36b3 # v31.10.6
+      - name: Run flake checker
+        uses: DeterminateSystems/flake-checker-action@89c01715e5d0dfdc0a1bfe9d59891ee4945c1483 # main
+
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - name: treefmt
+          system: x86_64-linux
+          os: ubuntu-latest
+          cmd: 'nix build .#checks.x86_64-linux.treefmt'
+        - name: check x86_64-linux
+          system: x86_64-linux
+          os: ubuntu-latest
+          cmd: 'nix flake check'
+        - name: check aarch64-linux
+          system: aarch64-linux
+          os: ubuntu-24.04-arm
+          cmd: 'nix flake check'
+    steps:
+      - name: Free disk space
+        uses: wimpysworld/nothing-but-nix@687c797a730352432950c707ab493fcc951818d7 # v10
+        with:
+          hatchet-protocol: rampage
+          root-safe-haven: '25600' # Default 2048
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - name: Install nix
+        uses: cachix/install-nix-action@8aa03977d8d733052d78f4e008a241fd1dbf36b3 # v31.10.6
+      # TODO: cachix
+      - name: Build
+        run: |
+          ${{ matrix.cmd }} \
+              --abort-on-warn \
+              --print-build-logs \
+              --log-format raw
+
+  # A meta-job that can be referenced by GitHub Rulesets.
+  # It is normally skipped, but if there was a failure it will also fail.
+  check-success:
+    name: Success
+    runs-on: ubuntu-slim
+    if: failure()
+    needs:
+      - build
+      - flake-checker
+    steps:
+      - name: Failed
+        run: exit 1
