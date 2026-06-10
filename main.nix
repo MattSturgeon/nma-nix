@@ -1,7 +1,15 @@
 {
   nixpkgs ? <nixpkgs>,
   system ? builtins.currentSystem,
-  pkgs ? import nixpkgs { inherit system; },
+  pkgs ? import nixpkgs {
+    inherit system;
+    config.allowUnfreePredicate =
+      drv:
+      builtins.elem (drv.pname or drv.name) [
+        "7zz"
+        "uasm"
+      ];
+  },
 }:
 let
   nexusmods-app = pkgs.callPackage ./package/nexusmods-app.nix { };
