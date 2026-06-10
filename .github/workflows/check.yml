@@ -31,7 +31,7 @@ jobs:
       - name: Install nix
         uses: cachix/install-nix-action@8aa03977d8d733052d78f4e008a241fd1dbf36b3 # v31.10.6
       - name: Run flake checker
-        uses: DeterminateSystems/flake-checker-action@89c01715e5d0dfdc0a1bfe9d59891ee4945c1483 # main
+        uses: DeterminateSystems/flake-checker-action@9ee1c5473f1abdfb299f6c4f0fab813147c97fe3 # main
 
   build:
     name: ${{ matrix.name }}
