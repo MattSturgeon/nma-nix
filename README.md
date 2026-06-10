@@ -1,12 +1,14 @@
 # NexusMods.App Nix package
 
 > [!CAUTION]
-> NexusMods.App has been [discontinued] upstream.
-> This project is intended for users with existing installations.
+> NexusMods.App has been [discontinued] upstream and will soon be removed from Nixpkgs.
+> This project packages the final upstream release for Nix users who still rely on NexusMods.App.
 >
 > New users should use a [maintained mod manager](#alternatives).
 
-NexusMods.App is a discontinued mod installer, creator and manager for:
+This repository exists to preserve access to NexusMods.App after its removal from Nixpkgs.
+
+[NexusMods.App] is a mod manager for:
 - Baldur's Gate 3
 - Cyberpunk 2077
 - Mount & Blade II: Bannerlord
@@ -17,8 +19,8 @@ Support for some games is better than others, as the project was discontinued du
 ## Discontinued
 
 NexusMods.App was [discontinued] by Nexus Mods during the early stages of its development.
-It is currently functional for a handful of games, but does not receive updates,
-including security updates or fixes for _game_ updates.
+It is currently functional for a handful of games, but no longer receives updates,
+including security fixes, compatibility updates, or support for future game updates.
 
 Nexus Mods have moved the NexusMods.App team to work on improving their existing mod manager, [Vortex].
 Vortex currently only supports Windows, but there are plans to add Linux support.
@@ -49,9 +51,9 @@ You can consume this project with or without flakes.
 
 ```nix
 # Non-flake
+# Replace `<commit>` with the desired Git revision and update the SHA-256 hash.
 let
-  # You will need to update the commit hash and sha256 output hash.
-  nma-rev = "todo";
+  nma-rev = "<commit>";
   nma = builtins.fetchTarball {
     url = "https://github.com/MattSturgeon/nma-nix/archive/${nma-rev}.tar.gz";
     sha256 = "";
@@ -62,18 +64,23 @@ import "${nma}/overlay.nix"
 
 ### Packages
 
-`nexusmods-app` is a fully FOSS build of NexusMods.App.
-
-`nexusmods-app-unfree` is NexusMods.App built with RAR-archive support.
-It is unfree _only_ because 7-Zip's RAR support licensing is unclear.
+- `nexusmods-app` is a fully FOSS build of NexusMods.App.
+- `nexusmods-app-unfree` enables RAR archive support through 7-Zip.
+  The package is marked unfree due to the licensing status of RAR support.
 
 ### Overlay
 
 `./overlay.nix` and the `overlays.default` flake output provide a Nixpkgs overlay that adds the above packages to the package set.
 
-### Binary Substituter
+### Cachix
 
-You can use our Cachix binary substituter to benefit from pre-compiled packages.
+You can use our Cachix binary cache to download pre-built packages.
+
+```bash
+cachix use nexusmods-app-nix
+```
+
+Manual configuration:
 
 URL:
 ```
@@ -85,6 +92,15 @@ Public key:
 nexusmods-app-nix.cachix.org-1:s/R/lYmFfSfvzZ52h0K/SeSTGPbs4HJGFECegwiIyXs=
 ```
 
+## Maintenance
+
+Upstream development has ended.
+This repository maintains packaging for the final upstream release of NexusMods.App.
+
+Packaging fixes and Nixpkgs compatibility updates may be accepted,
+but no effort is made to patch application bugs, security issues, or game compatibility problems.
+
+[NexusMods.App]: https://github.com/Nexus-Mods/NexusMods.App
 [discontinued]: https://www.nexusmods.com/news/15424
 [limo]: https://github.com/limo-app/limo
 [Vortex]: https://www.nexusmods.com/vortex
