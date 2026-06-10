@@ -71,6 +71,20 @@ It is unfree _only_ because 7-Zip's RAR support licensing is unclear.
 
 `./overlay.nix` and the `overlays.default` flake output provide a Nixpkgs overlay that adds the above packages to the package set.
 
+### Binary Substituter
+
+You can use our Cachix binary substituter to benefit from pre-compiled packages.
+
+URL:
+```
+https://nexusmods-app-nix.cachix.org
+```
+
+Public key:
+```
+nexusmods-app-nix.cachix.org-1:s/R/lYmFfSfvzZ52h0K/SeSTGPbs4HJGFECegwiIyXs=
+```
+
 [discontinued]: https://www.nexusmods.com/news/15424
 [limo]: https://github.com/limo-app/limo
 [Vortex]: https://www.nexusmods.com/vortex

@@ -3,6 +3,12 @@
 
   nixConfig = {
     commit-lock-file-summary = "chore(flake): update inputs";
+    extra-substituters = [
+      "https://nexusmods-app-nix.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "nexusmods-app-nix.cachix.org-1:s/R/lYmFfSfvzZ52h0K/SeSTGPbs4HJGFECegwiIyXs="
+    ];
   };
 
   inputs = {
