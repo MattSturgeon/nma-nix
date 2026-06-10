@@ -5,6 +5,7 @@
   desktop-file-utils,
   dotnetCorePackages,
   fetchFromGitHub,
+  fetchpatch,
   imagemagick,
   lib,
   xdg-utils,
@@ -32,6 +33,14 @@ buildDotnetModule (finalAttrs: {
   };
 
   gameHashes = callPackage ./game-hashes.nix { };
+
+  patches = [
+    (fetchpatch {
+      name = "set-singlemainwindow-in-desktop-entry.patch";
+      url = "https://github.com/Nexus-Mods/NexusMods.App/pull/2387.patch";
+      hash = "sha256-I60vXuFyabIyedXijbafEy3ackTh5o67870Dk1wafoI=";
+    })
+  ];
 
   enableParallelBuilding = false;
 
