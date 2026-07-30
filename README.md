@@ -28,6 +28,7 @@ Vortex can also be run via Wine or Proton, but it can be challenging to set it u
 
 ### Alternatives
 
+- [Amethyst Mod Manager](https://github.com/ChrisDKN/Amethyst-Mod-Manager) native Linux mod manager, inspired by MO2 (Flatpak, AUR)
 - [limo] simple native QT mod manager (Flatpack, AUR, Nixpkgs)
 - [Vortex]
   - Native Linux (eventually)
